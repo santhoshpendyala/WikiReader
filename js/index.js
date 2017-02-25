@@ -1,14 +1,19 @@
 angular.module('wikireader', ['ngSanitize']);
 angular.module('wikireader')
+.run(['$anchorScroll', function($anchorScroll) {
+  $anchorScroll.yOffset = 50;   // always scroll by 50 extra pixels
+}])
+angular.module('wikireader')
   .controller('mainController', mainController);
 
-function mainController($sce, $scope, $http) {
+function mainController($sce, $scope, $http,$anchorScroll,$location) {
   var vm = this;
   vm.editing = false;
   vm.header = "Title";
   vm.title = "Title";
   vm.Content = "Search to see article ";
-
+vm.rightsidenav=false;
+  vm.rightsidenav2=false;
   function getArticle() {
     //alert(vm.header);
     $http.jsonp($sce.trustAsResourceUrl('https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&titles=' + vm.header), {
@@ -46,6 +51,7 @@ function mainController($sce, $scope, $http) {
           vm.title = value.title;
           vm.header = angular.copy(vm.title);
           vm.editing = false;
+          vm.searchResult=null;
         }
         //$scope.Content = response.data.query.pages[object.keys(querydata)[0]].extract;
       });
@@ -74,6 +80,42 @@ function mainController($sce, $scope, $http) {
       });
   }
 
+  
+  function getInfoboxByTitle(title) {
+    //alert(vm.header);
+    $http.jsonp($sce.trustAsResourceUrl('https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=' + title+ '&rvsection=0&rvparse' ), {
+        jsonpCallbackParam: 'callback'
+      })
+      .then(function(response) {
+        vm.infoquerydata = response.data.query.pages;
+        var keys = Object.keys(vm.infoquerydata);
+        if (keys[0] == "-1") {
+          
+        } else {
+          var value = vm.infoquerydata[keys[0]];
+          var infoBox = value.revisions[0];
+          var infokeys = Object.keys(infoBox);
+          vm.infoBox = infoBox[infokeys[0]];          
+        }
+        //$scope.Content = response.data.query.pages[object.keys(querydata)[0]].extract;
+      });
+    }
+
+  function getHeadings() {
+  vm.headingList=[];
+  angular.forEach(angular.element(document).find('h2'), function(value, key){
+     var a = angular.element(value);
+    var idname='heading'+vm.headingList.length;
+    a.attr('id',idname);
+     vm.headingList.push({heading:a.text(),id:idname});
+});
+}
+  function scrollTo(loc) {
+    console.log(loc);
+      $location.hash(loc);
+      $anchorScroll();
+    };
+  
   function reAssign() {
     //console.log("vm.title" + vm.title +"vm.header"+vm.header)
     vm.header = angular.copy(vm.title);
@@ -82,6 +124,9 @@ function mainController($sce, $scope, $http) {
   vm.getArticle = getArticle;
   vm.getArticleByTitle = getArticleByTitle;
   vm.reAssign = reAssign;
+  vm.getHeadings=getHeadings;
+  vm.scrollTo=scrollTo;
+  vm.getInfoboxByTitle=getInfoboxByTitle;
 }
 
 angular.module('wikireader')

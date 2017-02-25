@@ -66,49 +66,69 @@ a:visited {
   top: 0;
   left: 0;
   width: 100%;
- color: #5b4636;
+  color: #5b4636;
   background-color: #fbf0d9;
   border-bottom: 1px solid #e7e7e7;
   text-align: center;
-  z-index:9999;
+  z-index: 9999;
+/*   box-shadow: 0 1px 0 rgba(12, 13, 14, 0.1), 0 1px 3px rgba(12, 13, 14, 0.1), 0 4px 20px rgba(12, 13, 14, 0.035), 0 1px 1px rgba(12, 13, 14, 0.025); */
 }
-#topbar label{
-  padding:0;
-  margin:auto;
-  height:45px;
+
+#topbar label {
+  padding: 0;
+  margin: auto;
+  height: 45px;
   font-size: 2.5em;
   font-weight: bold;
-  text-transform: uppercase;
 }
-#searchbar{
-  width:auto;
-  height:45px;
+
+#searchbar {
+  width: auto;
+  height: 45px;
   background-color: #fbf0d9;
   backface-visibility: none;
   border: none;
   font-size: 2.5em;
   font-weight: bold;
-  text-transform: uppercase;
   text-align: left;
   color: #5b4636;
   outline: none;
   vertical-align: baseline;
-  
-  margin:auto;
+  margin: auto;
 }
-#searchbar:focus{
+
+#searchbar:focus {
   border-bottom: 1px dotted blue;
 }
-.fa-search:before {
-    font-family: 'FontAwesome';
-    color:lightgray;
-    position: relative;
-    left: 0px;
-    content: "\f002";
-  font-size: 2.5em;
+
+.fa:before {
+  font-family: 'FontAwesome';
+  color: #6590ba;
+  position: relative;
+  left: 0px;
+  font-size: 1.5em;
   font-style: normal;
 }
 
+.fa-search:before {
+  content: "\f002";
+  cursor: pointer;
+}
+
+.fa-bars:before {
+  content: "\f0c9";
+  cursor: pointer;
+}
+
+.fa-info:before {
+  content: "\f129";
+  cursor: pointer;
+}
+
+.fa-list:before {
+  content: "\f03a";
+  cursor: pointer;
+}
 
 .card {
   position: relative;
@@ -116,23 +136,278 @@ a:visited {
   width: 100%;
   top: 12%;
   box-shadow: 2px 2px 2px #598290;
-  font-size:0.75em;
+  font-size: 0.75em;
   line-height: 1.5em;
   border: 1px solid #598290;
 }
+
 .card a {
   text-decoration: none;
   color: black;
 }
+
 .card h2 {
   padding-left: 30px;
-  
 }
+
 .card p {
-/*   padding: 0px 9px 15px 30px; */
+  /*   padding: 0px 9px 15px 30px; */
   text-aling: left;
 }
+
 .card:hover {
-  
   border-left: 10px solid #598290;
+}
+
+.leftPad {
+  margin-left: 0.5em;
+}
+
+.topPad {
+  margin-top: 0.5em;
+}
+
+.rightPad {
+  margin-right: 0.5em;
+}
+
+.list-unstyled {
+  padding-left: 0;
+  list-style: none;
+}
+
+.list-inline {
+  list-style: none;
+}
+
+#leftSidenav,
+#rightSidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  /*     padding-top: 3em; */
+}
+
+#rightSidenav {
+  right: 0;
+  text-align: left;
+}
+
+#leftSidenav {
+  left: 0;
+  text-align: center;
+  padding-top: 3em;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 2.5em;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+.sidenav2{
+  background: wheat !important;
+}
+.sidenav2 .closebtn {
+    position: absolute;
+    top: 0;
+    background-color: white;
+    border-radius: 50%;
+    right: 25px;
+    font-size: 36px;
+    width: 1em;
+    height: 1em;
+    line-height: 1em;
+    text-align: center;
+    /* margin-left: 50px; */
+    margin: auto;
+    border: 2px solid black;
+}
+.sidenav2 a {
+    /* padding: 8px 8px 8px 32px; */
+    text-decoration: none;
+    /* font-size: 2.5em; */
+    color: #818181;
+    /* display: block; */
+    transition: 0.3s;
+    /* cursor: pointer; */
+}
+
+.infoicon{
+  border:2px solid #6590ba;
+  width:1.5em;
+  height:1.5em;
+}
+.fullWidth {
+  width: 100% !important;
+}
+
+.noWidth {
+  width: 0;
+}
+
+.halfWidth {
+  width: 50% !important;
+}
+
+table{
+  width:100%;
+  table-layout: fixed;
+}
+/* .tbl-header{
+  background-color: rgba(255,255,255,0.3);
+ }
+.tbl-content{
+  height:300px;
+  overflow-x:auto;
+  margin-top: 0px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+th{
+  padding: 20px 15px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 12px;
+  color: #fff;
+  text-transform: uppercase;
+}
+td{
+  padding: 15px;
+  text-align: left;
+  vertical-align:middle;
+  font-weight: 300;
+  font-size: 12px;
+  color: #fff;
+  border-bottom: solid 1px rgba(255,255,255,0.1);
+}
+ */
+/* Infobox template style */
+.infobox {
+    border: 1px solid #a2a9b1;
+    border-spacing: 3px;
+/*     background-color: #f8f9fa; */
+    color: black;
+    /* @noflip */
+    margin: 0.5em 0 0.5em 1em;
+    padding: 0.2em;
+    /* @noflip */
+    float: right;
+    /* @noflip */
+    clear: right;
+    font-size: 88%;
+    line-height: 1.5em;
+}
+.infobox caption {
+    font-size: 125%;
+    font-weight: bold;
+    padding: 0.2em;
+}
+.infobox td,
+.infobox th {
+    vertical-align: top;
+    /* @noflip */
+    text-align: left;
+}
+.infobox.bordered {
+    border-collapse: collapse;
+}
+.infobox.bordered td,
+.infobox.bordered th {
+    border: 1px solid #a2a9b1;
+}
+.infobox.bordered .borderless td,
+.infobox.bordered .borderless th {
+    border: 0;
+}
+
+.infobox.sisterproject {
+    width: 20em;
+    font-size: 90%;
+}
+
+.infobox.standard-talk {
+    border: 1px solid #c0c090;
+    background-color: #f8eaba;
+}
+.infobox.standard-talk.bordered td,
+.infobox.standard-talk.bordered th {
+    border: 1px solid #c0c090;
+}
+
+/* styles for bordered infobox with merged rows */
+.infobox.bordered .mergedtoprow td,
+.infobox.bordered .mergedtoprow th {
+    border: 0;
+    border-top: 1px solid #a2a9b1;
+    /* @noflip */
+    border-right: 1px solid #a2a9b1;
+}
+
+.infobox.bordered .mergedrow td,
+.infobox.bordered .mergedrow th {
+    border: 0;
+    /* @noflip */
+    border-right: 1px solid #a2a9b1;
+}
+
+/* Styles for geography infoboxes, eg countries,
+   country subdivisions, cities, etc.            */
+.infobox.geography {
+    border-collapse: collapse;
+    line-height: 1.2em;
+    font-size: 90%;
+}
+
+.infobox.geography  td,
+.infobox.geography  th {
+    border-top: 1px solid #a2a9b1;
+    padding: 0.4em 0.6em 0.4em 0.6em;
+}
+.infobox.geography .mergedtoprow td,
+.infobox.geography .mergedtoprow th {
+    border-top: 1px solid #a2a9b1;
+    padding: 0.4em 0.6em 0.2em 0.6em;
+}
+
+.infobox.geography .mergedrow td,
+.infobox.geography .mergedrow th {
+    border: 0;
+    padding: 0 0.6em 0.2em 0.6em;
+}
+
+.infobox.geography .mergedbottomrow td,
+.infobox.geography .mergedbottomrow th {
+    border-top: 0;
+    border-bottom: 1px solid #a2a9b1;
+    padding: 0 0.6em 0.4em 0.6em;
+}
+
+.infobox.geography .maptable td,
+.infobox.geography .maptable th {
+    border: 0;
+    padding: 0;
+}
+
+.hatnote,.references,.mw-ext-cite-error{
+  display:none;
 }
