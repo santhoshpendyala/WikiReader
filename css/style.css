@@ -80,15 +80,29 @@ a:visited {
   height: 45px;
   font-size: 2.5em;
   font-weight: bold;
+  /*color:#6590ba;*/
+  background-color: #666666;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: rgba(255,255,255,0.5) 0px 3px 3px;
 }
-
+.pagecontent label {
+  padding: 0;
+    margin: auto;
+    height: 1em;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-decoration: underline;
+}
 #searchbar {
-  width: auto;
-  height: 45px;
+  width: 70%;
+  height: 1em;
   background-color: #fbf0d9;
   backface-visibility: none;
   border: none;
-  font-size: 2.5em;
+  font-size: 1.5em;
   font-weight: bold;
   text-align: left;
   color: #5b4636;
@@ -411,3 +425,4 @@ td{
 .hatnote,.references,.mw-ext-cite-error{
   display:none;
 }
+
