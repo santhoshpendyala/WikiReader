@@ -1,0 +1,11 @@
+﻿<section class="cards">
+    <div class="card" ng-repeat="story in mainctrl.searchResult">
+        <!--<a href="" ng-click="mainctrl.getArticleByTitle(story.title)">-->
+        <a href="" ui-sref="home.wiki({wval:story.title})" ng-click="mainctrl.getArticleByTitle(story.title)">
+                <div class='article'>
+                    <h2>{{story.title}}</h2>
+                    <p>{{story.body}}</p>
+                </div>
+            </a>
+</div>
+</section>

@@ -1,0 +1,51 @@
+﻿<div ng-controller="mainController as mainctrl">
+    <div id="topbar">
+        <span class="pull-left leftPad topPad">
+            <span ng-click="leftsidenav=!leftsidenav"><i class="fa fa-bars"></i></span>
+            <div id="leftSidenav" class="sidenav" ng-class="{'fullWidth':leftsidenav}">
+                <a href="javascript:void(0)" class="closebtn" ng-click="leftsidenav=!leftsidenav">&times;</a>
+                <a href="#" ng-click="leftsidenav=!leftsidenav">History</a>
+                <a href="#" ng-click="leftsidenav=!leftsidenav">Favourites</a>
+                <a href="#" ng-click="leftsidenav=!leftsidenav">Saved articles</a>
+                <a href="#" ng-click="leftsidenav=!leftsidenav">Feedback</a>
+                <a href="#" ng-click="leftsidenav=!leftsidenav">About</a>
+            </div>
+        </span>
+        <label>Wiki Reader</label>
+
+        <span ng-show="mainctrl.rightsideIcons && !mainctrl.editing">
+            <div class="pull-right topPad rightPad">
+                <span ng-click="mainctrl.rightsidenav=!mainctrl.rightsidenav;mainctrl.getHeadings();"><i class="fa fa-list"></i></span>
+                <div id="rightSidenav" class="sidenav" ng-class="{'fullWidth':mainctrl.rightsidenav}">
+                    <a href="javascript:void(0)" class="closebtn" ng-click="mainctrl.rightsidenav=!mainctrl.rightsidenav">&times;</a>
+
+                    <a ng-click="mainctrl.rightsidenav=!mainctrl.rightsidenav;mainctrl.scrollTo(headings.id);" ng-repeat="headings in mainctrl.headingList"><span>{{headings.heading}}</span></a>
+                </div>
+            </div>
+
+            <div class="pull-right topPad rightPad infoicon">
+                <span ng-click="mainctrl.rightsidenav2=!mainctrl.rightsidenav2;mainctrl.getInfoboxByTitle(mainctrl.title);"><i class="fa fa-info"></i></span>
+                <div id="rightSidenav" class="sidenav2" ng-class="{'fullWidth':mainctrl.rightsidenav2}">
+                    <a href="javascript:void(0)" class="closebtn" ng-click="mainctrl.rightsidenav2=!mainctrl.rightsidenav2">&times;</a>
+                    <div class="infobox" ng-bind-html="mainctrl.infoBox"></div>
+                </div>
+            </div>
+        </span>
+    </div>
+    <div id="content">
+        <div id="page">
+            <div id="pagereader">
+                <div class="pagecontent">
+                    <i class="fa fa-search" ng-hide="mainctrl.editing" ng-click="mainctrl.editing = true;focusInput=true"></i>
+                    <label ng-bind="mainctrl.header" ng-hide="mainctrl.editing" ng-click="mainctrl.editing = true;focusInput=true">Wiki Reader</label>
+                    <div ng-show="mainctrl.editing">
+                        <input id="searchbar" focus-me="focusInput" ng-enter="mainctrl.getArticle()" ng-cancel="mainctrl.reAssign()" ng-blur="mainctrl.reAssign()" ng-model="mainctrl.header"></input>
+                    </div>
+                    <div ui-view></div>
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
