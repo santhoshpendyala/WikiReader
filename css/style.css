@@ -78,15 +78,18 @@ a:visited {
   padding: 0;
   margin: auto;
   height: 45px;
-  font-size: 2.5em;
-  font-weight: bold;
-  /*color:#6590ba;*/
-  background-color: #666666;
+  font-family: 'Domine', serif;
+  font-size: 1.5em;
+  line-height: 2.5em;
+  /*font-weight: bold;*/
+  color:#6590ba;
+  /*color: #9E9E9E;*/
+  /*background-color: #666666;
     -webkit-background-clip: text;
     -moz-background-clip: text;
     background-clip: text;
     color: transparent;
-    text-shadow: rgba(255,255,255,0.5) 0px 3px 3px;
+    text-shadow: rgba(255,255,255,0.5) 0px 3px 3px;*/
 }
 .pagecontent label {
   padding: 0;
@@ -95,6 +98,12 @@ a:visited {
     font-size: 1.5em;
     font-weight: bold;
     text-decoration: underline;
+    cursor: pointer;
+}
+.pagecontent .quote{
+    font-family: 'Pacifico', cursive;
+    font-size: 1.5em;
+    text-align:center;
 }
 #searchbar {
   width: 70%;
@@ -135,7 +144,7 @@ a:visited {
 }
 
 .fa-info:before {
-  content: "\f129";
+  content: "\f05a";
   cursor: pointer;
 }
 
@@ -267,11 +276,11 @@ a:visited {
     /* cursor: pointer; */
 }
 
-.infoicon{
+/*.infoicon{
   border:2px solid #6590ba;
   width:1.5em;
   height:1.5em;
-}
+}*/
 .fullWidth {
   width: 100% !important;
 }
@@ -426,3 +435,7 @@ td{
   display:none;
 }
 
+::selection {
+    color: #fff;
+    background: #0AD0CF;
+}
