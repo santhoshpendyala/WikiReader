@@ -6,7 +6,7 @@ angular.module('wikireader')
 
 angular.module('wikireader')
     .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
-        
+
 
         var homeState = {
             name: 'home',
@@ -32,27 +32,54 @@ angular.module('wikireader')
         var aboutState = {
             name: 'about',
             url: '/about',
-            template: '<h3>Its the UI-Router hello world app!</h3>'
+            templateUrl: 'partials/about.html'
         }
-
+        var historyState = {
+            name: 'home.history',
+            url: 'history',
+            templateUrl: 'partials/history.html'
+        }
+        var favoriteState = {
+            name: 'home.favorite',
+            url: 'favorite',
+            templateUrl: 'partials/favorite.html'
+        }
+        var savedState = {
+            name: 'home.saved',
+            url: 'saved',
+            templateUrl: 'partials/saved.html'
+        }
         $stateProvider.state(homeState);
         $stateProvider.state(wikiState);
         $stateProvider.state(searchState);
         $stateProvider.state(quoteState);
-        //$stateProvider.state(aboutState);
+        $stateProvider.state(aboutState);
+        $stateProvider.state(historyState);
+        $stateProvider.state(favoriteState);
+        $stateProvider.state(savedState);
         $urlRouterProvider.otherwise('/DailyQuote');
-      
+
         // use the HTML5 History API
         //$locationProvider.html5Mode(true);
     });
 
 angular.module('wikireader')
   .controller('mainController', mainController);
+//mainController.$inject = ['localstorage'];
 
-function mainController($sce, $scope, $http, $anchorScroll, $location,$state, $stateParams) {
+angular.module('wikireader')
+.controller('historyController', historyController);
+
+angular.module('wikireader')
+.controller('favoritesController', favoritesController);
+
+angular.module('wikireader')
+.controller('savedController', savedController);
+
+function mainController(localstorage,$sce, $scope, $http, $anchorScroll, $location, $state, $stateParams) {
     var wval = $stateParams.wval;
     var sval = $stateParams.sval;
-    
+    console.log("wval " + wval);
     var vm = this;
     vm.editing = false;
     vm.header = "Search here";
@@ -61,10 +88,34 @@ function mainController($sce, $scope, $http, $anchorScroll, $location,$state, $s
     vm.rightsidenav = false;
     vm.rightsidenav2 = false;
     vm.rightsideIcons = false;
+    vm.saved = false;
+    vm.favorite = false;
 
     function getArticle() {
-        searchArticle(vm.header);
+        var values = getsaved(vm.header);
+        if (values) {
+            //console.log( values);
+            vm.Content = values.content;
+            vm.data = values;
+            vm.title = values.title;
+            vm.header = angular.copy(vm.title);
+            vm.editing = false;
+            vm.searchResult = null;
+            vm.rightsideIcons = true;
+            vm.saved = true;
+            $state.go('home.wiki', { wval: values.title });
+            if (localstorage.valueExistsInArray("favorites", "title", vm.title) == null) {
+                vm.favorite = false;
+            }
+            else {
+                vm.favorite = true;
+            }
+        }
+        else {
+            searchArticle(vm.header);
+        }
     }
+
     function searchArticle(svalue) {
         //alert(vm.header);
         $http.jsonp($sce.trustAsResourceUrl('https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&titles=' + svalue), {
@@ -107,6 +158,23 @@ function mainController($sce, $scope, $http, $anchorScroll, $location,$state, $s
                   vm.searchResult = null;
                   vm.rightsideIcons = true;
                   $state.go('home.wiki', { wval: svalue });
+                  //inserting into local storage
+                  var hisdata = { title: vm.title, body: vm.Content.replace(/<(?:.|\n)*?>/gm, '').substring(0, 100) }
+                  if (localstorage.valueExistsInArray("history", "title", vm.title)==null) {
+                      localstorage.setInArray("history", hisdata);
+                  }
+                  if (localstorage.valueExistsInArray("favorites", "title", vm.title) == null) {
+                      vm.favorite = false;
+                  }
+                  else {
+                      vm.favorite = true;
+                  }
+                  if (localstorage.valueExistsInArray("saved", "title", vm.title) == null) {
+                      vm.saved = false;
+                  }
+                  else {
+                      vm.saved = true;
+                  }
               }
               //console.log("vm.rightsideIcons " + vm.rightsideIcons);
               //$scope.Content = response.data.query.pages[object.keys(querydata)[0]].extract;
@@ -137,7 +205,7 @@ function mainController($sce, $scope, $http, $anchorScroll, $location,$state, $s
               }
               //$scope.Content = response.data.query.pages[object.keys(querydata)[0]].extract;
           });
-        
+
     }
 
     function getQuote() {
@@ -147,7 +215,7 @@ function mainController($sce, $scope, $http, $anchorScroll, $location,$state, $s
           .then(function (response) {
               vm.quote = response.data.quoteText;
               vm.quoteAuthor = response.data.quoteAuthor;
-              
+
           });
 
     }
@@ -171,7 +239,23 @@ function mainController($sce, $scope, $http, $anchorScroll, $location,$state, $s
                   vm.editing = false;
                   vm.rightsideIcons = true;
                   vm.searchResult = null;
-                  console.log("vm.header" + vm.header);
+                  //console.log("vm.header" + vm.header);
+                  var hisdata = { title: vm.title, body: vm.Content.replace(/<(?:.|\n)*?>/gm, '').substring(0, 100) }
+                  if (!localstorage.valueExistsInArray("history", "title", vm.title)) {
+                      localstorage.setInArray("history", hisdata);
+                  }
+                  if (localstorage.valueExistsInArray("favorites", "title", vm.title) == null) {
+                      vm.favorite = false;
+                  }
+                  else {
+                      vm.favorite = true;
+                  }
+                  if (localstorage.valueExistsInArray("saved", "title", vm.title) == null) {
+                      vm.saved = false;
+                  }
+                  else {
+                      vm.saved = true;
+                  }
                   //$state.go('home.wiki', { wval: vm.header }, { notify: false })
               }
               //$scope.Content = response.data.query.pages[object.keys(querydata)[0]].extract;
@@ -208,6 +292,7 @@ function mainController($sce, $scope, $http, $anchorScroll, $location,$state, $s
             vm.headingList.push({ heading: a.text(), id: idname });
         });
     }
+    
     function scrollTo(loc) {
         console.log(loc);
         $location.hash(loc);
@@ -219,22 +304,81 @@ function mainController($sce, $scope, $http, $anchorScroll, $location,$state, $s
         vm.header = angular.copy(vm.title);
         vm.editing = false;
     }
-    
+
+    function dosave() {
+        var hisdata = { title: vm.title, body: vm.Content.replace(/<(?:.|\n)*?>/gm, '').substring(0, 100), content: vm.Content }
+        if (localstorage.valueExistsInArray("saved", "title", vm.title) == null) {
+            localstorage.setInArray("saved", hisdata);
+            vm.saved = true;
+            console.log("Added to saved");
+        }
+    }
+
+    function dofavorite() {
+        var hisdata = { title: vm.title, body: vm.Content.replace(/<(?:.|\n)*?>/gm, '').substring(0, 100) }
+        if (localstorage.valueExistsInArray("favorites", "title", vm.title) == null) {
+            localstorage.setInArray("favorites", hisdata);
+            vm.favorite = true;
+            console.log("Added to favorites");
+        }
+    }
+
+    function removesaved() {
+        localstorage.removeFromArray("saved", "title", vm.title);
+        vm.saved = false;
+        console.log("Removed from saved");
+    }
+    function getsaved(wval) {
+        return localstorage.valueExistsInArray("saved", "title", wval);
+        //console.log("return from saved");
+    }
+    function removefavorite() {
+        //var hisdata = { title: vm.title, body: vm.Content.replace(/<(?:.|\n)*?>/gm, '').substring(0, 100) }
+        localstorage.removeFromArray("favorites", "title", vm.title);
+        vm.favorite = false;
+        console.log("Removed from favorites");
+    }
+
     vm.getArticle = getArticle;
     vm.getArticleByTitle = getArticleByTitle;
     vm.reAssign = reAssign;
     vm.getHeadings = getHeadings;
     vm.scrollTo = scrollTo;
     vm.getInfoboxByTitle = getInfoboxByTitle;
+    vm.dosave = dosave;
+    vm.dofavorite = dofavorite;
+    vm.removesaved = removesaved;
+    vm.removefavorite = removefavorite;
     //getMainPage();
     getQuote();
     if (wval) {
-        getArticleByTitle(wval);
+        vm.header = wval;
+        //getArticleByTitle(wval);
+        getArticle();
     }
     if (sval) {
         searchArticle(sval);
     }
-    
+
+}
+
+function wikiController(localstorage, $sce, $scope, $http, $anchorScroll, $location, $state, $stateParams) {
+    var wval = $stateParams.wval;
+}
+
+function historyController($scope, localstorage) {
+    var vm = this;
+    vm.historyData = localstorage.get("history");    
+}
+
+function favoritesController($scope, localstorage) {
+    var vm = this;
+    vm.favoritesData = localstorage.get("favorites");
+}
+
+function savedController($scope, localstorage) {
+    var vm = this;
+    vm.savedData = localstorage.get("saved");
 }
 
 angular.module('wikireader')
@@ -281,7 +425,7 @@ angular.module('wikireader')
                       //console.log('trigger',value);
                       $timeout(function () {
                           element[0].focus();
-                          element[0].setSelectionRange(0,999);
+                          element[0].setSelectionRange(0, 999);
                           scope.trigger = false;
                       });
                   }
@@ -289,3 +433,69 @@ angular.module('wikireader')
           }
       };
   });
+
+angular.module('wikireader')
+.factory('localstorage', function () {
+    var retVal = {};
+    var ls = window.localStorage;
+    function get(name) {
+        var val = ls[name];
+        if (val != undefined) {
+            return JSON.parse(val);
+        }
+        return null;
+    }
+    function set(name, val) {
+        ls[name] = JSON.stringify(val);
+    }
+    function setInArray(name, val) {
+        var obj = get(name);
+        if (obj == null) {
+            obj = [];
+        }
+        obj.push(val);
+        ls[name] = JSON.stringify(obj);
+    }
+    function removeFromArray(name, prName, val) {
+        var retVal = null;
+        var values = get(name);
+        if (values) {
+            values.forEach(function (value, index) {
+                if (value[prName] == val) {
+                    retVal = index;
+                }
+            })
+        }
+        if (retVal != null) {
+            values.splice(retVal, 1)
+            set(name, values);
+        }        
+        //return retVal;
+    }
+    function remove(name) {
+        if (ls.hasOwnProperty(name)) {
+            ls.removeItem(name);
+        }
+    }
+    function valueExistsInArray(name,prName, val) {
+        var retVal = null;
+        var values = get(name);
+        if (values) {
+            values.forEach(function (value, index) {
+                if (value[prName].toLowerCase() == val.toLowerCase()) {
+                    retVal = value;
+                }
+            })
+        }
+        return retVal;
+    }
+    retVal.get = get;
+    retVal.set = set;
+    retVal.remove = remove;
+    retVal.setInArray = setInArray;
+    retVal.valueExistsInArray = valueExistsInArray;
+    retVal.removeFromArray = removeFromArray
+    return retVal;
+});
+
+

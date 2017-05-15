@@ -3,4 +3,4 @@
 <div ng-show="mainctrl.editing">
     <input id="searchbar" focus-me="focusInput" ng-enter="mainctrl.getArticle()" ng-cancel="mainctrl.reAssign()" ng-blur="mainctrl.reAssign()" ng-model="mainctrl.header" />
 </div>
-<div ng-bind-html="mainctrl.Content"></div>
+<div ui-view></div>

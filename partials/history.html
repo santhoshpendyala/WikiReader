@@ -1,0 +1,11 @@
+﻿<section class="cards" ng-controller="historyController as historyctrl">
+    <div class="card" ng-repeat="history in historyctrl.historyData">
+        <!--<a href="" ng-click="mainctrl.getArticleByTitle(story.title)">-->
+        <a href="" ui-sref="home.wiki({wval:history.title})" ng-click="mainctrl.getArticleByTitle(history.title)">
+                <div class='article'>
+                    <h2>{{history.title}}</h2>
+                    <p>{{history.body}}</p>
+                </div>
+            </a>
+</div>
+</section>

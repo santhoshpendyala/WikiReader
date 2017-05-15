@@ -1,0 +1,11 @@
+﻿<section class="cards" ng-controller="savedController as savedctrl">
+    <div class="card" ng-repeat="saved in savedctrl.savedData">
+        <!--<a href="" ng-click="mainctrl.getArticleByTitle(story.title)">-->
+        <a href="" ui-sref="home.wiki({wval:saved.title})" ng-click="mainctrl.getArticleByTitle(saved.title)">
+                <div class='article'>
+                    <h2>{{saved.title}}</h2>
+                    <p>{{saved.body}}</p>
+                </div>
+            </a>
+</div>
+</section>
