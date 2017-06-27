@@ -76,12 +76,13 @@ angular.module('wikireader')
 angular.module('wikireader')
 .controller('savedController', savedController);
 
-function mainController(localstorage,$sce, $scope, $http, $anchorScroll, $location, $state, $stateParams) {
+function mainController(localstorage, $sce, $scope, $http, $anchorScroll, $location, $state, $stateParams) {
     var wval = $stateParams.wval;
     var sval = $stateParams.sval;
     console.log("wval " + wval);
     var vm = this;
     vm.editing = false;
+    vm.optPopOvr = false;
     vm.header = "Search here";
     vm.title = "Search here";
     vm.Content = "";
@@ -160,7 +161,7 @@ function mainController(localstorage,$sce, $scope, $http, $anchorScroll, $locati
                   $state.go('home.wiki', { wval: svalue });
                   //inserting into local storage
                   var hisdata = { title: vm.title, body: vm.Content.replace(/<(?:.|\n)*?>/gm, '').substring(0, 100) }
-                  if (localstorage.valueExistsInArray("history", "title", vm.title)==null) {
+                  if (localstorage.valueExistsInArray("history", "title", vm.title) == null) {
                       localstorage.setInArray("history", hisdata);
                   }
                   if (localstorage.valueExistsInArray("favorites", "title", vm.title) == null) {
@@ -292,7 +293,7 @@ function mainController(localstorage,$sce, $scope, $http, $anchorScroll, $locati
             vm.headingList.push({ heading: a.text(), id: idname });
         });
     }
-    
+
     function scrollTo(loc) {
         console.log(loc);
         $location.hash(loc);
@@ -368,7 +369,7 @@ function wikiController(localstorage, $sce, $scope, $http, $anchorScroll, $locat
 
 function historyController($scope, localstorage) {
     var vm = this;
-    vm.historyData = localstorage.get("history");    
+    vm.historyData = localstorage.get("history");
 }
 
 function favoritesController($scope, localstorage) {
@@ -469,7 +470,7 @@ angular.module('wikireader')
         if (retVal != null) {
             values.splice(retVal, 1)
             set(name, values);
-        }        
+        }
         //return retVal;
     }
     function remove(name) {
@@ -477,7 +478,7 @@ angular.module('wikireader')
             ls.removeItem(name);
         }
     }
-    function valueExistsInArray(name,prName, val) {
+    function valueExistsInArray(name, prName, val) {
         var retVal = null;
         var values = get(name);
         if (values) {
@@ -499,3 +500,34 @@ angular.module('wikireader')
 });
 
 
+angular.module('wikireader')
+.directive('svgIcon', function () {
+    function link(scope, element, attrs) {
+        function path(icon) {
+            return icons[icon];
+        }
+
+        function renderSVG() {
+            element.html(path(attrs.p));
+        }
+
+        renderSVG();
+    }
+
+    return {
+        link: link,
+        restrict: 'E'
+    };
+});
+
+var icons = {
+    favoriteOutline: '<svg height="32" viewBox="0 0 48 48" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h48v48h-48z" fill="none"/><path d="M33 6c-3.48 0-6.82 1.62-9 4.17-2.18-2.55-5.52-4.17-9-4.17-6.17 0-11 4.83-11 11 0 7.55 6.8 13.72 17.1 23.07l2.9 2.63 2.9-2.63c10.3-9.35 17.1-15.52 17.1-23.07 0-6.17-4.83-11-11-11zm-8.79 31.11l-.21.19-.21-.19c-9.51-8.63-15.79-14.33-15.79-20.11 0-3.99 3.01-7 7-7 3.08 0 6.08 1.99 7.13 4.72h3.73c1.06-2.73 4.06-4.72 7.14-4.72 3.99 0 7 3.01 7 7 0 5.78-6.28 11.48-15.79 20.11z"/></svg>',
+    favorite:'<svg height="32" viewBox="0 0 48 48" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h48v48h-48z" fill="none"/><path d="M24 42.7l-2.9-2.63c-10.3-9.35-17.1-15.52-17.1-23.07 0-6.17 4.83-11 11-11 3.48 0 6.82 1.62 9 4.17 2.18-2.55 5.52-4.17 9-4.17 6.17 0 11 4.83 11 11 0 7.55-6.8 13.72-17.1 23.07l-2.9 2.63z"/></svg>',
+    listBullteted: '<svg height="32" viewBox="0 0 48 48" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M8 21c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0-12c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 24.33c-1.47 0-2.67 1.19-2.67 2.67s1.2 2.67 2.67 2.67 2.67-1.19 2.67-2.67-1.2-2.67-2.67-2.67zm6 4.67h28v-4h-28v4zm0-12h28v-4h-28v4zm0-16v4h28v-4h-28z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>',
+    infoOutline: '<svg height="32" viewBox="0 0 48 48" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h48v48h-48z" fill="none"/><path d="M22 34h4v-12h-4v12zm2-30c-11.05 0-20 8.95-20 20s8.95 20 20 20 20-8.95 20-20-8.95-20-20-20zm0 36c-8.82 0-16-7.18-16-16s7.18-16 16-16 16 7.18 16 16-7.18 16-16 16zm-2-22h4v-4h-4v4z"/></svg>',
+    menuBar: '<svg height="32px" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z"/></svg>',
+    save: '<svg height="32" viewBox="0 0 48 48" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M38 6h-28.02c-2.21 0-3.96 1.79-3.96 4l-.02 28c0 2.21 1.77 4 3.98 4h28.02c2.21 0 4-1.79 4-4v-28c0-2.21-1.79-4-4-4zm0 24h-8c0 3.31-2.69 6-6 6s-6-2.69-6-6h-8.02v-20h28.02v20zm-6-10h-4v-6h-8v6h-4l8 8 8-8z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>',
+    saved: '<svg height="32" viewBox="0 0 48 48" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h48v48h-48z" fill="none"/><path d="M38 6h-8.37c-.82-2.32-3.02-4-5.63-4s-4.81 1.68-5.63 4h-8.37c-2.21 0-4 1.79-4 4v28c0 2.21 1.79 4 4 4h28c2.21 0 4-1.79 4-4v-28c0-2.21-1.79-4-4-4zm-14 0c1.1 0 2 .89 2 2s-.9 2-2 2-2-.89-2-2 .9-2 2-2zm-4 28l-8-8 2.83-2.83 5.17 5.17 13.17-13.17 2.83 2.83-16 16z"/></svg>',
+    optionVerticle: '<svg height="32" viewBox="0 0 48 48" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h48v48h-48z" fill="none"/><path d="M24 16c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 4c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 12c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/></svg>',
+    search: '<svg height="32" viewBox="0 0 48 48" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M31 28h-1.59l-.55-.55c1.96-2.27 3.14-5.22 3.14-8.45 0-7.18-5.82-13-13-13s-13 5.82-13 13 5.82 13 13 13c3.23 0 6.18-1.18 8.45-3.13l.55.55v1.58l10 9.98 2.98-2.98-9.98-10zm-12 0c-4.97 0-9-4.03-9-9s4.03-9 9-9 9 4.03 9 9-4.03 9-9 9z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>'
+}

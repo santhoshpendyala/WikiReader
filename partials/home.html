@@ -1,49 +1,75 @@
 ﻿<div ng-controller="mainController as mainctrl">
-    <div id="topbar">
-        <span class="pull-left leftPad topPad">
-            <span ng-click="leftsidenav=!leftsidenav"><i class="fa fa-bars"></i></span>
+    <div class="icon-bar">
+        <div class="row">
+            <span class="leftIcon" ng-click="leftsidenav=!leftsidenav">
+                <span><!--<i class="fa fa-bars"></i>--></span>
+                <svg height="32px" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z" /></svg>
+            </span>
+            <!--for left side bar-->
             <div id="leftSidenav" class="sidenav" ng-class="{'fullWidth':leftsidenav}">
                 <a href="javascript:void(0)" class="closebtn" ng-click="leftsidenav=!leftsidenav">&times;</a>
                 <a href="#" ng-click="leftsidenav=!leftsidenav" ui-sref="home.history">History</a>
                 <a href="#" ng-click="leftsidenav=!leftsidenav" ui-sref="home.favorite">Favourites</a>
                 <a href="#" ng-click="leftsidenav=!leftsidenav" ui-sref="home.saved">Saved articles</a>
                 <a href="#" ng-click="leftsidenav=!leftsidenav">Feedback</a>
-                <a href="#" ng-click="leftsidenav=!leftsidenav" ui-sref="about" >About</a>
+                <a href="#" ng-click="leftsidenav=!leftsidenav" ui-sref="about">About</a>
             </div>
-        </span>
-        <label> <a href="#" ui-sref="home.dailyQuote">Wiki Reader</a></label>
+            <label> <a class="title" href="#" ui-sref="home.dailyQuote">Wiki Reader</a></label>
 
-        <span ng-show="mainctrl.rightsideIcons && !mainctrl.editing">
-            <div class="pull-right topPad rightPad">
-                <span ng-click="mainctrl.rightsidenav=!mainctrl.rightsidenav;mainctrl.getHeadings();"><i class="fa fa-list"></i></span>
+            <div class="rightIconBar" ng-show="(mainctrl.rightsideIcons && !mainctrl.editing)" ng-class="{'dispN': !mainctrl.optPopOvr}">
+                <div class="rightIcon" ng-click="mainctrl.rightsidenav=!mainctrl.rightsidenav;mainctrl.getHeadings();">
+                    <!--<span ><i class="fa fa-list"></i></span>-->
+                    <svg-icon p="listBullteted"></svg-icon>
+                </div>
+                <!--for list of headings-->
                 <div id="rightSidenav" class="sidenav" ng-class="{'fullWidth':mainctrl.rightsidenav}">
                     <a href="javascript:void(0)" class="closebtn" ng-click="mainctrl.rightsidenav=!mainctrl.rightsidenav">&times;</a>
-
                     <a ng-click="mainctrl.rightsidenav=!mainctrl.rightsidenav;mainctrl.scrollTo(headings.id);" ng-repeat="headings in mainctrl.headingList"><span>{{headings.heading}}</span></a>
                 </div>
-            </div>
 
-            <div class="pull-right topPad rightPad infoicon">
-                <span ng-click="mainctrl.rightsidenav2=!mainctrl.rightsidenav2;mainctrl.getInfoboxByTitle(mainctrl.title);"><i class="fa fa-info"></i></span>
+                <div class="rightIcon" ng-click="mainctrl.rightsidenav2=!mainctrl.rightsidenav2;mainctrl.getInfoboxByTitle(mainctrl.title);">
+                    <!--<span ><i class="fa fa-info"></i></span>-->
+                    <svg-icon p="infoOutline"></svg-icon>
+                </div>
+                <!--for info box-->
                 <div id="rightSidenav" class="sidenav2" ng-class="{'fullWidth':mainctrl.rightsidenav2}">
                     <a href="javascript:void(0)" class="closebtn" ng-click="mainctrl.rightsidenav2=!mainctrl.rightsidenav2">&times;</a>
                     <div class="infobox" ng-bind-html="mainctrl.infoBox"></div>
                 </div>
+                <div class="rightIcon" ng-click="mainctrl.saved ? mainctrl.removesaved() : mainctrl.dosave()">
+                    <!--<span ng-hide="mainctrl.saved"><i class="fa fa-floppy-o"></i></span>-->
+                    <svg-icon ng-hide="mainctrl.saved" p="save"></svg-icon>
+                    <svg-icon ng-show="mainctrl.saved" p="saved"></svg-icon>
+                    <!--<span ng-hide="mainctrl.saved"><i class="fa fa-floppy-o"></i></span>-->
+                    <!--<span ng-show="mainctrl.saved" ><i class="fa fa-floppy"></i></span>-->
+                </div>
+                <div class="rightIcon" ng-click="mainctrl.favorite ? mainctrl.removefavorite() : mainctrl.dofavorite()">
+                    <svg-icon ng-show="mainctrl.favorite" p="favoriteOutline"></svg-icon>
+                    <svg-icon ng-hide="mainctrl.favorite" p="favorite"></svg-icon>
+                    <!--<span ng-hide="mainctrl.favorite" ><i class="fa fa-bookmark-o"></i></span>-->
+                    <!--<span ng-show="mainctrl.favorite"><i class="fa fa-bookmark"></i></span>-->
+                </div>
+
             </div>
-            <div class="pull-right topPad rightPad">
-                <span ng-hide="mainctrl.saved" ng-click="mainctrl.dosave()"><i class="fa fa-floppy-o"></i></span>
-                <span ng-show="mainctrl.saved" ng-click="mainctrl.removesaved()"><i class="fa fa-floppy"></i></span>                
+            <div class="rightIcon optionIcon" ng-click="mainctrl.optPopOvr=!mainctrl.optPopOvr;">
+                <!--<span ><i class="fa fa-info"></i></span>-->
+                <svg-icon p="optionVerticle"></svg-icon>
             </div>
-            <div class="pull-right topPad rightPad">
-                <span ng-hide="mainctrl.favorite" ng-click="mainctrl.dofavorite()"><i class="fa fa-bookmark-o"></i></span>
-                <span ng-show="mainctrl.favorite" ng-click="mainctrl.removefavorite()"><i class="fa fa-bookmark"></i></span>                
-            </div>
-        </span>
+        </div>
+        <div class="row subHeading">
+            <div>
+                <svg-icon p="search" ng-hide="mainctrl.editing" ng-click="mainctrl.editing = true;focusInput=true"></svg-icon>
+                <label ng-bind="mainctrl.header" ng-hide="mainctrl.editing" ng-click="mainctrl.editing = true;focusInput=true">Wiki Reader</label>
+                <div ng-show="mainctrl.editing">
+                    <input id="searchbar" focus-me="focusInput" ng-enter="mainctrl.getArticle()" ng-cancel="mainctrl.reAssign()" ng-blur="mainctrl.reAssign()" ng-model="mainctrl.header" />
+                </div>
+            </div>            
+        </div>
     </div>
     <div id="content">
         <div id="page">
             <div id="pagereader">
-                <div class="pagecontent">                    
+                <div class="pagecontent">
                     <div ui-view></div>
                 </div>
             </div>

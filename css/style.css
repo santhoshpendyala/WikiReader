@@ -1,3 +1,23 @@
+@media screen and (min-width : 320px) and (max-width : 500px) {
+    .rightIconBar {
+        position: fixed;
+        width: 60px;
+        background-color: wheat;
+        right: 0;
+        top: 50px;
+        border-radius: 10px;
+        /*display: none;*/
+    }
+
+    .optionIcon, .disp {
+        display: block !important;
+    }
+
+    .dispN {
+        display: none;
+    }
+}
+
 body {
     background: #fbf0d9;
     padding: 0;
@@ -18,7 +38,7 @@ body {
 }
 
 #content {
-    padding-top: 60px;
+    padding-top: 105px;
 }
 
 #content,
@@ -74,7 +94,7 @@ a {
     /*   box-shadow: 0 1px 0 rgba(12, 13, 14, 0.1), 0 1px 3px rgba(12, 13, 14, 0.1), 0 4px 20px rgba(12, 13, 14, 0.035), 0 1px 1px rgba(12, 13, 14, 0.025); */
 }
 
-    #topbar label a{
+    #topbar label a {
         padding: 0;
         margin: auto;
         height: 45px;
@@ -130,10 +150,10 @@ a {
 
 .fa:before {
     font-family: 'FontAwesome';
-    color: #6590ba;
-    position: relative;
+    color: #5b4636;
+    /*position: relative;*/
     left: 0px;
-    font-size: 1.5em;
+    font-size: 0.75em;
     font-style: normal;
 }
 
@@ -161,25 +181,29 @@ a {
     content: "\f097";
     cursor: pointer;
 }
+
 .fa-bookmark:before {
     content: "\f02e";
     cursor: pointer;
 }
+
 .fa-floppy-o:before {
     content: "\f0c7";
     cursor: pointer;
 }
+
 .fa-floppy:before {
     content: "\f0c7";
     color: #f44336;
     cursor: pointer;
 }
+
 .card {
     position: relative;
     margin: 0.75em auto;
     width: 100%;
     top: 12%;
-    border-radius:15px;
+    border-radius: 15px;
     font-size: 0.75em;
     line-height: 1.5em;
     -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
@@ -191,8 +215,9 @@ a {
         text-decoration: none;
         color: #009688;
     }
-     .card .article {
-        padding:5px;
+
+    .card .article {
+        padding: 5px;
     }
 
     .card h2 {
@@ -256,7 +281,7 @@ a {
 .sidenav a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
-    font-size: 2.5em;
+    font-size: 1.5em;
     color: #818181;
     display: block;
     transition: 0.3s;
@@ -667,3 +692,92 @@ td{
     font-weight: bold;
 }
 
+
+
+.icon-bar {
+    width: 100%;
+    overflow: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: #5b4636;
+    background-color: #fbf0d9;
+    border-bottom: 1px solid #e7e7e7;
+    display: table;
+    z-index: 1;
+}
+.row{
+    display:table-row;
+}
+.subHeading{
+    text-align: center;
+    font-size: 2em;
+}
+
+.leftIcon {
+    width: 60px;
+    float: left;
+    text-align: center;
+    padding: 8px 0;
+    transition: all 0.3s ease;
+    color: #5b4636;
+    font-size: 32px;
+    cursor: pointer;
+}
+
+.title {
+    float: left;
+    text-decoration: none;
+    padding-left: 20px !important;
+    text-align: center;
+    padding: 8px 0;
+    transition: all 0.3s ease;
+    color: #5b4636;
+    font-size: 28px;
+}
+
+.icon-bar .rightIcon:hover svg, .icon-bar .leftIcon:hover svg {
+    fill: #F44336;
+}
+
+.icon-bar .rightIcon:hover, .icon-bar .leftIcon:hover {
+    background-color: rgba(0, 0, 0, 0.23);
+    border-radius: 10px;
+}
+
+.rightIcon svg, .leftIcon svg {
+    fill: #5b4636;
+}
+
+.icon-bar .rightIcon:hover i:before, .icon-bar .leftIcon:hover i:before {
+    color: white;
+}
+
+.title:hover {
+    text-decoration: none;
+    font-size: 28px;
+    background-color: #fbf0d9;
+}
+
+.icon-bar a {
+}
+
+.rightIcon {
+    width: 60px;
+    float: right;
+    text-align: center;
+    padding: 8px 0;
+    transition: all 0.3s ease;
+    color: #5b4636;
+    font-size: 36px;
+    cursor: pointer;
+}
+
+.optionIcon {
+    display: none;
+}
+
+.active {
+    background-color: #4CAF50 !important;
+}
