@@ -1,4 +1,4 @@
-angular.module('wikireader', ['ngSanitize', 'ui.router']);
+angular.module('wikireader', ['ngSanitize', 'ui.router', 'ngAnimate']);
 angular.module('wikireader')
 .run(['$anchorScroll', function ($anchorScroll) {
     $anchorScroll.yOffset = 50;   // always scroll by 50 extra pixels
